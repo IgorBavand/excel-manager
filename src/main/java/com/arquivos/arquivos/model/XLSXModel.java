@@ -1,6 +1,6 @@
 package com.arquivos.arquivos.model;
 
-import com.opencsv.bean.CsvBindByName;
+
 import lombok.*;
 
 @Getter
@@ -9,20 +9,10 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CSVModel {
+public class XLSXModel {
 
-   // @CsvBindByName(column = "nome")
     private String nome;
-
-   // @CsvBindByName(column = "idade")
     private Integer idade;
-
-    //@CsvBindByName(column = "cidade")
     private String cidade;
-
-    //@CsvBindByName(column = "rua")
     private String rua;
-
-
-
 }

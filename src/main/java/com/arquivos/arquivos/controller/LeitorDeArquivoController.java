@@ -19,9 +19,13 @@ public class LeitorDeArquivoController {
 
     private final LeitorService leitorService;
 
-    @PostMapping(value = "/importador/salvar", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<String> leitor(@RequestParam MultipartFile files) throws IOException {
-        return ResponseEntity.ok().body(leitorService.leitor(files));
+    @PostMapping(value = "/importador/salvar-csv", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> leitorCSV(@RequestParam MultipartFile files) throws IOException {
+        return ResponseEntity.ok().body(leitorService.leitorCSV(files));
     }
 
+    @PostMapping(value = "/importador/salvar-xlsx", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> leitorXLSX(@RequestParam MultipartFile files) throws IOException {
+        return ResponseEntity.ok().body(leitorService.leitorXLSX(files));
+    }
 }
