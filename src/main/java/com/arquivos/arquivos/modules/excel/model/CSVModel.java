@@ -1,5 +1,4 @@
-package com.arquivos.arquivos.model;
-
+package com.arquivos.arquivos.modules.excel.model;
 
 import lombok.*;
 
@@ -9,8 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class XLSXModel {
-
+public class CSVModel {
     private String nome;
     private Integer idade;
     private String cidade;

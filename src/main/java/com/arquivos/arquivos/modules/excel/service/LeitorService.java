@@ -1,12 +1,10 @@
-package com.arquivos.arquivos.service;
+package com.arquivos.arquivos.modules.excel.service;
 
-import com.arquivos.arquivos.model.CSVModel;
-import com.arquivos.arquivos.model.XLSXModel;
+import com.arquivos.arquivos.modules.excel.model.CSVModel;
+import com.arquivos.arquivos.modules.excel.model.XLSXModel;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
-import lombok.Cleanup;
 import lombok.RequiredArgsConstructor;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -15,13 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
-import java.math.BigDecimal;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Scanner;
 
 import static org.apache.commons.collections.IteratorUtils.toList;
 
@@ -31,37 +24,25 @@ public class LeitorService {
 
     public String leitorCSV(MultipartFile files) throws IOException {
 
-
         Reader reader = new InputStreamReader(files.getInputStream());
-        CsvToBean<CSVModel> csvToBean = new CsvToBeanBuilder(reader)
+        CsvToBean csvToBean = new CsvToBeanBuilder(reader)
                 .withType(CSVModel.class)
                 .build();
 
-        List<CSVModel> listaCSV = csvToBean.parse();
+        var listaCSV = csvToBean.parse();
 
-        for(CSVModel csv : listaCSV){
-            System.out.println(csv);
-        }
+        listaCSV.stream().forEach(row -> System.out.println(row));
 
         return "arquivo-importado";
     }
 
-
-
     public String leitorXLSX(MultipartFile files){
-
         List <XLSXModel> arquivoXlxs = new ArrayList<>();
 
-
         try {
-
             Workbook workbook = new XSSFWorkbook(files.getInputStream());
-
-
-
             org.apache.poi.ss.usermodel.Sheet sheet = workbook.getSheetAt(0);
 
-            //setando as linhas
             List <Row> rows = (List<Row>)toList(sheet.iterator());
             rows.remove(0);
 
@@ -81,7 +62,6 @@ public class LeitorService {
                 arquivoXlxs.add(arquivoBuild);
 
             });
-
 
             for (XLSXModel arquivo : arquivoXlxs){
                 System.out.println(arquivo);

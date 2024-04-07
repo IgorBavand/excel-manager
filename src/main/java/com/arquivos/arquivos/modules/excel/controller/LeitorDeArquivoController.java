@@ -1,6 +1,6 @@
-package com.arquivos.arquivos.controller;
+package com.arquivos.arquivos.modules.excel.controller;
 
-import com.arquivos.arquivos.service.LeitorService;
+import com.arquivos.arquivos.modules.excel.service.LeitorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
