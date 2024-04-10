@@ -17,7 +17,10 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        String[] permitAll = { "/api/auth", "/api/auth/create-new-user" };
+        String[] permitAll = { "/api/auth",
+            "/api/auth/create-new-user",
+            "/swagger-ui/**",
+            "/v3/api-docs/**" };
 
         return http
             .csrf(AbstractHttpConfigurer::disable)
