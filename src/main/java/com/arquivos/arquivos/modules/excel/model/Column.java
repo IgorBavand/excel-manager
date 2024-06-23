@@ -18,6 +18,6 @@ public class Column {
     private Integer id;
     @jakarta.persistence.Column(columnDefinition = "text")
     private String header;
-    private String descripotion;
+    private String description;
     private String delimiter;
 }

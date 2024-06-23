@@ -20,7 +20,9 @@ public class SecurityConfig {
         String[] permitAll = { "/api/auth",
             "/api/auth/create-new-user",
             "/swagger-ui/**",
-            "/v3/api-docs/**" };
+            "/v3/api-docs/**",
+            "/api/books/**",
+            "/api/columns/**"};
 
         return http
             .csrf(AbstractHttpConfigurer::disable)

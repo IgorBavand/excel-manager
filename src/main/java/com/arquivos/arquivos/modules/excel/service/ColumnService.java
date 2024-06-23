@@ -6,6 +6,8 @@ import com.arquivos.arquivos.modules.excel.repository.ColumnRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ColumnService {
@@ -18,10 +20,14 @@ public class ColumnService {
         );
     }
 
+    public List<Column> findAll() {
+        return repository.findAll();
+    }
+
     public void save(ColumnRequest request) {
         var colunm = Column.builder()
             .header(request.header())
-            .descripotion(request.description())
+            .description(request.description())
             .delimiter(request.delimiter())
             .build();
 

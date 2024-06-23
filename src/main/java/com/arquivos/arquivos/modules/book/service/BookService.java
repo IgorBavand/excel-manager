@@ -98,4 +98,8 @@ public class BookService {
         }
     }
 
+    public List<Book> getBooks() {
+        return repository.findAll();
+    }
+
 }
