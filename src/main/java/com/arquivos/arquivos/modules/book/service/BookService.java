@@ -2,12 +2,14 @@ package com.arquivos.arquivos.modules.book.service;
 
 import com.arquivos.arquivos.modules.book.BooksRepository;
 import com.arquivos.arquivos.modules.book.dto.BookImportRequest;
+import com.arquivos.arquivos.modules.book.dto.BookRequest;
 import com.arquivos.arquivos.modules.book.model.Book;
 import com.arquivos.arquivos.modules.excel.enums.Extensions;
 import com.arquivos.arquivos.modules.excel.model.Column;
 import com.arquivos.arquivos.modules.excel.service.ColumnService;
 import com.opencsv.bean.CsvToBeanBuilder;
 import lombok.RequiredArgsConstructor;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,6 +18,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -98,8 +101,36 @@ public class BookService {
         }
     }
 
+    @Transactional
+    public Book save(BookRequest request) {
+        return repository.save(Book.of(request));
+    }
+
     public List<Book> getBooks() {
         return repository.findAll();
+    }
+
+    public Book findById(Integer id) {
+        Optional<Book> bookOpt = repository.findById(id);
+        return bookOpt.orElse(null);
+    }
+
+    public Book deleteById(Integer id) {
+        Optional<Book> bookOpt = repository.findById(id);
+        if(bookOpt.isPresent()) {
+            repository.deleteById(id);
+        }
+        return null;
+    }
+
+    @Transactional
+    public Book updateById(Integer id, BookRequest request) {
+        Optional<Book> bookOpt = repository.findById(id);
+        if(bookOpt.isPresent()) {
+            bookOpt.get().update(request);
+            return bookOpt.get();
+        }
+        return null;
     }
 
 }
