@@ -1,16 +1,19 @@
 package com.arquivos.arquivos.modules.book.controller;
 
 import com.arquivos.arquivos.modules.book.dto.BookRequest;
+import com.arquivos.arquivos.modules.book.dto.PageRequest;
 import com.arquivos.arquivos.modules.book.model.Book;
 import com.arquivos.arquivos.modules.book.service.BookService;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("api/books")
@@ -27,27 +30,30 @@ public class BookController {
     }
 
     @PostMapping("/save-book")
-    public Book saveBook(@RequestBody BookRequest request) {
-        return service.save(request);
+    public ResponseEntity<Book> saveBook(@RequestBody @Valid BookRequest request) {
+        Book book = service.save(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(book);
     }
 
     @GetMapping("/{id}")
-        public Book findById(@PathVariable Integer id) {
-        return service.findById(id);
+    public ResponseEntity<Book> findById(@PathVariable Integer id) {
+        return ResponseEntity.ok(service.findById(id));
     }
 
     @PutMapping("/{id}")
-    public Book updateById(@PathVariable Integer id, @RequestBody BookRequest request) {
-        return service.updateById(id, request);
+    public ResponseEntity<Book> updateById(@PathVariable Integer id, @RequestBody BookRequest request) {
+        return ResponseEntity.ok(service.updateById(id, request));
     }
 
     @DeleteMapping("/{id}")
-    public Book deleteById(@PathVariable Integer id) {
-        return service.deleteById(id);
+    public ResponseEntity<Void> deleteById(@PathVariable Integer id) {
+        service.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping
-    public List<Book> getBooks() {
-        return service.getBooks();
+    public ResponseEntity<Page<Book>> getAllProdutos(PageRequest pageRequest) {
+        return ResponseEntity.ok().body(service.getBooks(pageRequest));
     }
+
 }
