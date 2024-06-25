@@ -1,8 +1,10 @@
 package com.arquivos.arquivos.modules.book.service;
 
+import com.arquivos.arquivos.exception.BookNotFoundException;
 import com.arquivos.arquivos.modules.book.BooksRepository;
 import com.arquivos.arquivos.modules.book.dto.BookImportRequest;
 import com.arquivos.arquivos.modules.book.dto.BookRequest;
+import com.arquivos.arquivos.modules.book.dto.PageRequest;
 import com.arquivos.arquivos.modules.book.model.Book;
 import com.arquivos.arquivos.modules.excel.enums.Extensions;
 import com.arquivos.arquivos.modules.excel.model.Column;
@@ -10,6 +12,7 @@ import com.arquivos.arquivos.modules.excel.service.ColumnService;
 import com.opencsv.bean.CsvToBeanBuilder;
 import lombok.RequiredArgsConstructor;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -106,31 +109,26 @@ public class BookService {
         return repository.save(Book.of(request));
     }
 
-    public List<Book> getBooks() {
-        return repository.findAll();
+    public Page<Book> getBooks(PageRequest pageRequest) {
+        return repository.findAll(pageRequest);
     }
 
     public Book findById(Integer id) {
-        Optional<Book> bookOpt = repository.findById(id);
-        return bookOpt.orElse(null);
+        return repository.findById(id)
+                .orElseThrow(() -> new BookNotFoundException(id));
     }
 
-    public Book deleteById(Integer id) {
-        Optional<Book> bookOpt = repository.findById(id);
-        if(bookOpt.isPresent()) {
-            repository.deleteById(id);
-        }
-        return null;
+    public void deleteById(Integer id) {
+        repository.delete(repository.findById(id)
+                .orElseThrow(() -> new BookNotFoundException(id)));
     }
 
     @Transactional
     public Book updateById(Integer id, BookRequest request) {
-        Optional<Book> bookOpt = repository.findById(id);
-        if(bookOpt.isPresent()) {
-            bookOpt.get().update(request);
-            return bookOpt.get();
-        }
-        return null;
+        Book book = repository.findById(id)
+                .orElseThrow(() -> new BookNotFoundException(id));
+        book.update(request);
+        return book;
     }
 
 }
