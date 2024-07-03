@@ -109,8 +109,8 @@ public class BookService {
         return repository.save(Book.of(request));
     }
 
-    public Page<Book> getBooks(PageRequest pageRequest) {
-        return repository.findAll(pageRequest);
+    public List<Book> getBooks(PageRequest pageRequest) {
+        return repository.findAll();
     }
 
     public Book findById(Integer id) {

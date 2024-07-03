@@ -2,6 +2,7 @@ package com.arquivos.arquivos.config;
 
 
 import com.arquivos.arquivos.modules.authentication.utils.JwtRequestFilter;
+import jakarta.ws.rs.HttpMethod;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -29,7 +30,6 @@ public class SecurityConfig {
     String[] permitAll = {"/api/auth/**",
         "/swagger-ui/**",
         "/v3/api-docs/**",
-        "/api/books/**",
         "/api/columns/**",
         "/api/users/create-new-user",
         "/api/roles/**"};
@@ -40,6 +40,7 @@ public class SecurityConfig {
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(authz -> authz
                 .requestMatchers(permitAll).permitAll()
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session
